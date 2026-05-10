@@ -98,14 +98,22 @@
 <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
 <!-- TopNavBar -->
 <header class="bg-surface border-b border-gray-200 flex justify-between items-center px-6 w-full h-[56px] shrink-0 z-10">
-<div class="flex items-center h-full">
-<img src="orca-logo.png" alt="Orca Security" style="height:26px;width:auto;"/>
-<div class="w-px h-6 bg-gray-200 mx-5"></div>
-<nav class="flex h-full">
-<a href="index.html" class="px-4 h-full flex items-center text-gray-600 hover:text-orca-blue hover:bg-gray-50 transition-colors font-table-primary text-table-primary">Exposure List</a>
-<a href="vulnerability-detail.html" class="px-4 h-full flex items-center text-gray-600 hover:text-orca-blue hover:bg-gray-50 transition-colors font-table-primary text-table-primary">Vulnerability Detail</a>
-<a href="exposure-summary.html" class="px-4 h-full flex items-center text-orca-blue border-b-2 border-orca-blue font-semibold font-table-primary text-table-primary">Exposure Summary</a>
-</nav>
+<div class="flex items-center h-full gap-4">
+<img src="orca-logo.png" alt="Orca Security" style="height:36px;width:auto;"/>
+<details class="relative" style="list-style:none;">
+<summary style="list-style:none;outline:none;" class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-gray-700 cursor-pointer hover:bg-gray-50 font-table-primary text-table-primary select-none">
+<span class="material-symbols-outlined text-[16px] text-gray-500">table_view</span>
+<span>Exposure Summary</span>
+<span class="material-symbols-outlined text-[16px] text-gray-400">arrow_drop_down</span>
+</summary>
+<div class="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg overflow-hidden z-50 min-w-[210px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="index.html" class="flex items-center px-4 py-2.5 text-gray-700 hover:bg-gray-50 font-table-primary text-table-primary" style="padding-left:2.25rem;">Exposure List</a>
+<a href="vulnerability-detail.html" class="flex items-center px-4 py-2.5 text-gray-700 hover:bg-gray-50 font-table-primary text-table-primary" style="padding-left:2.25rem;">Vulnerability Detail</a>
+<a href="exposure-summary.html" class="flex items-center gap-2 px-4 py-2.5 bg-bg-highlight-blue text-orca-blue font-semibold font-table-primary text-table-primary">
+<span class="material-symbols-outlined text-[15px]">check</span>Exposure Summary
+</a>
+</div>
+</details>
 </div>
 <div class="flex items-center gap-4 flex-1 justify-end">
 <div class="relative w-96 mr-4">
