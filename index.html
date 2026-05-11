@@ -317,7 +317,7 @@
 </div>
 </div>
 <!-- Data Table Section -->
-<div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mt-6">
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm mt-6">
 <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
 <h2 class="font-section-header text-section-header text-orca-black">37 Exploitable Vulnerabilities</h2>
 <div class="flex gap-2">
@@ -329,7 +329,7 @@
 </button>
 </div>
 </div>
-<div class="overflow-x-auto">
+<div class="overflow-x-auto overflow-y-visible" style="overflow-y:visible;">
 <table class="w-full text-left border-collapse">
 <thead>
 <tr class="border-b border-gray-200 bg-white text-gray-500 font-label-caps text-label-caps uppercase">
@@ -379,7 +379,19 @@ Externally Exploitable
 <div class="font-monospace-data text-monospace-data text-gray-500 bg-gray-50 border border-gray-200 rounded px-2 py-1 max-w-xs truncate" title="Internet -> ELB -> prod-api-gateway-01:22">Internet -&gt; ELB -&gt; prod-api-gateway-01:22</div>
 </td>
 <td class="px-6 py-4 align-top text-right">
-<a href="vulnerability-detail.html" class="inline-block px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white transition-colors font-table-primary text-table-primary text-xs opacity-0 group-hover:opacity-100 focus:opacity-100">View Detail</a>
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="vulnerability-detail.html" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">person_add</span>Assign to Owner</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
 </td>
 </tr>
 <!-- Row 2: CVE-2024-6387 -->
@@ -418,7 +430,19 @@ Externally Exploitable
 <div class="font-monospace-data text-monospace-data text-gray-500 bg-white border border-gray-200 rounded px-2 py-1 max-w-xs truncate" title="Internet -> bastion-host-eu:22">Internet -&gt; bastion-host-eu:22</div>
 </td>
 <td class="px-6 py-4 align-top text-right">
-<button class="px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white transition-colors font-table-primary text-table-primary text-xs opacity-0 group-hover:opacity-100 focus:opacity-100">View Detail</button>
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">person_add</span>Assign to Owner</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
 </td>
 </tr>
 <!-- Row 3: CVE-2023-44487 -->
@@ -457,7 +481,19 @@ Externally Exploitable
 <div class="font-monospace-data text-monospace-data text-gray-500 bg-gray-50 border border-gray-200 rounded px-2 py-1 max-w-xs truncate" title="Internet -> ALB -> k8s-ingress-controller:443">Internet -&gt; ALB -&gt; k8s-ingress-controller:443</div>
 </td>
 <td class="px-6 py-4 align-top text-right">
-<button class="px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white transition-colors font-table-primary text-table-primary text-xs opacity-0 group-hover:opacity-100 focus:opacity-100">View Detail</button>
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">person_add</span>Assign to Owner</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
 </td>
 </tr>
 <!-- Row 4: CVE-2024-21626 — Externally Exploitable (fixed) -->
@@ -496,7 +532,19 @@ Externally Exploitable
 <div class="font-monospace-data text-monospace-data text-gray-500 bg-white border border-gray-200 rounded px-2 py-1 max-w-xs truncate" title="Internal VPC -> worker-node-group-1:docker">Internal VPC -&gt; worker-node-group-1:docker</div>
 </td>
 <td class="px-6 py-4 align-top text-right">
-<button class="px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white transition-colors font-table-primary text-table-primary text-xs opacity-0 group-hover:opacity-100 focus:opacity-100">View Detail</button>
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">person_add</span>Assign to Owner</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
 </td>
 </tr>
 <!-- Row 5: CVE-2023-2868 -->
@@ -535,7 +583,19 @@ Externally Exploitable
 <div class="font-monospace-data text-monospace-data text-gray-500 bg-gray-50 border border-gray-200 rounded px-2 py-1 max-w-xs truncate" title="Internet -> edge-gateway-appliance:80">Internet -&gt; edge-gateway-appliance:80</div>
 </td>
 <td class="px-6 py-4 align-top text-right">
-<button class="px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white transition-colors font-table-primary text-table-primary text-xs opacity-0 group-hover:opacity-100 focus:opacity-100">View Detail</button>
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">person_add</span>Assign to Owner</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
 </td>
 </tr>
 </tbody>
