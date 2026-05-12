@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ExposurePulse - Exposure List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        .attack-signal-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .attack-signal-tooltip {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 0;
+            z-index: 9999;
+            background: #101921;
+            color: #FFFFFF;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-family: 'Mulish', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            max-width: 280px;
+            min-width: 220px;
+            pointer-events: none;
+            white-space: normal;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.28);
+            line-height: 1.5;
+        }
+        .attack-signal-wrap:hover .attack-signal-tooltip {
+            display: block;
+        }
+        .cve-info-wrap { position: relative; display: inline-block; }
+        .cve-info-tooltip {
+            display: none; position: absolute; top: calc(100% + 6px); left: 0;
+            z-index: 9999; background: #101921; color: #FFFFFF; border-radius: 6px;
+            padding: 10px 12px; font-family: 'Mulish', sans-serif; font-size: 11px;
+            max-width: 260px; min-width: 200px; pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.28); line-height: 1.6;
+        }
+        .cve-info-wrap:hover .cve-info-tooltip { display: block; }
+        .cve-info-tooltip-up {
+            display: none; position: absolute; bottom: calc(100% + 6px); top: auto; left: 0;
+            z-index: 9999; background: #101921; color: #FFFFFF; border-radius: 6px;
+            padding: 10px 12px; font-family: 'Mulish', sans-serif; font-size: 11px;
+            max-width: 260px; min-width: 200px; pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.28); line-height: 1.6;
+        }
+        .cve-info-wrap:hover .cve-info-tooltip-up { display: block; }
+        #accept-risk-modal::backdrop,
+        #asset-risk-modal::backdrop,
+        #attack-path-list-modal::backdrop {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
+        }
+        .score-pill-wrap { position: relative; display: inline-block; cursor: default; }
+        .score-pill-tooltip {
+            display: none; position: absolute; bottom: calc(100% + 7px); left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999; background: #101921; color: #FFFFFF; border-radius: 6px;
+            padding: 9px 12px; font-family: 'Mulish', sans-serif; font-size: 11px;
+            max-width: 260px; min-width: 210px; pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.28); line-height: 1.6; white-space: normal; text-align: left;
+        }
+        .score-pill-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent; border-top-color: #101921;
+        }
+        .score-pill-wrap:hover .score-pill-tooltip { display: block; }
+        .col-hdr-wrap { position: relative; display: inline-flex; align-items: center; gap: 4px; }
+        .col-hdr-tooltip {
+            display: none; position: absolute; top: calc(100% + 7px); left: 0;
+            z-index: 9999; background: #101921; color: #FFFFFF; border-radius: 6px;
+            padding: 9px 12px; font-family: 'Mulish', sans-serif; font-size: 11px;
+            max-width: 280px; min-width: 230px; pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.28); line-height: 1.6;
+            white-space: normal; font-weight: 400; text-transform: none; letter-spacing: 0;
+        }
+        .col-hdr-wrap:hover .col-hdr-tooltip { display: block; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#717786",
+                        "cyan-accent": "#02D6FF",
+                        "on-tertiary-fixed-variant": "#793100",
+                        "error": "#ba1a1a",
+                        "on-background": "#181c23",
+                        "surface-bright": "#f9f9ff",
+                        "surface": "#f9f9ff",
+                        "severity-medium": "#FE7B1F",
+                        "on-tertiary-fixed": "#341100",
+                        "error-container": "#ffdad6",
+                        "background": "#f9f9ff",
+                        "on-error": "#ffffff",
+                        "on-surface": "#181c23",
+                        "outline-variant": "#c1c6d7",
+                        "on-secondary-fixed": "#141c25",
+                        "tertiary-fixed": "#ffdbcb",
+                        "gray-175": "#E8E9F1",
+                        "gray-400": "#A9B2C7",
+                        "bg-highlight-blue": "#E6F1FB",
+                        "gray-600": "#5F6D8F",
+                        "surface-tint": "#005cbb",
+                        "blue-5": "#0360C5",
+                        "surface-variant": "#e0e2ed",
+                        "orca-blue": "#0080FF",
+                        "severity-low": "#F8CD39",
+                        "surface-container-highest": "#e0e2ed",
+                        "inverse-surface": "#2d3038",
+                        "gray-150": "#F3F4F9",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "severity-critical": "#E2005E",
+                        "surface-container-lowest": "#ffffff",
+                        "severity-high": "#FF3342",
+                        "orca-black": "#101921",
+                        "secondary-fixed-dim": "#bec7d3",
+                        "blue-ada-dark": "#AFCFEE",
+                        "primary": "#005ab6",
+                        "on-secondary-container": "#5c656f",
+                        "surface-container-high": "#e6e8f3",
+                        "primary-container": "#0072e4",
+                        "blue-ada-light": "#0073E5",
+                        "gray-50": "#FDFDFF",
+                        "inverse-primary": "#abc7ff",
+                        "secondary-container": "#dae3ef",
+                        "surface-dim": "#d7dae4",
+                        "tertiary-container": "#c25200",
+                        "primary-fixed-dim": "#abc7ff",
+                        "secondary-fixed": "#dae3ef",
+                        "tertiary": "#9b4000",
+                        "gray-100": "#F9F9FC",
+                        "gray-500": "#8693B2",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#ebedf8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#3f4851",
+                        "on-primary-fixed-variant": "#00458f",
+                        "on-surface-variant": "#414754",
+                        "bg-highlight-red": "#FFF0F0",
+                        "primary-fixed": "#d7e3ff",
+                        "inverse-on-surface": "#eef0fb",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-container": "#fffbff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001b3f",
+                        "surface-container-low": "#f1f3fe",
+                        "secondary": "#565f69",
+                        "on-secondary": "#ffffff",
+                        "success-green": "#50C878",
+                        "gray-200": "#E0E2EC"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "micro": "4px",
+                        "section": "32px",
+                        "compact": "12px",
+                        "standard": "16px",
+                        "page": "48px",
+                        "large": "24px",
+                        "small": "8px"
+                    },
+                    "fontFamily": {
+                        "table-primary": ["Mulish"],
+                        "label-caps": ["Mulish"],
+                        "body-standard": ["Mulish"],
+                        "kpi-metric": ["Montserrat"],
+                        "page-title": ["Montserrat"],
+                        "monospace-data": ["Courier New"],
+                        "section-header": ["Mulish"],
+                        "table-secondary": ["Mulish"]
+                    },
+                    "fontSize": {
+                        "table-primary": ["13px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-standard": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "kpi-metric": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "page-title": ["24px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "monospace-data": ["11px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "section-header": ["16px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "table-secondary": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-standard text-body-standard text-on-surface antialiased h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-surface border-r border-gray-200 flex flex-col items-center py-4 space-y-6 h-full w-[56px] shrink-0">
+<div class="mb-4">
+<span class="material-symbols-outlined text-[28px] text-orca-blue" style="font-variation-settings: 'FILL' 1;">token</span>
+</div>
+<div class="flex flex-col space-y-2 w-full px-2">
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Dashboard">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Missions">
+<span class="material-symbols-outlined text-[20px]">target</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Inventory">
+<span class="material-symbols-outlined text-[20px]">inventory</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-orca-blue bg-bg-highlight-blue rounded-lg" href="#" title="Risks">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">security</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Compliance">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Alerts">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Settings">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Help">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</a>
+</div>
+<div class="mt-auto pt-4 flex flex-col items-center w-full px-2">
+<a class="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-orca-blue hover:bg-gray-150 rounded-lg transition-colors" href="#" title="Support">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-gray-200 flex justify-between items-center px-6 w-full h-[56px] shrink-0 z-10">
+<div class="flex items-center h-full gap-4">
+<img src="orca-logo.png" alt="Orca Security" style="height:36px;width:auto;"/>
+<details class="relative" style="list-style:none;">
+<summary style="list-style:none;outline:none;" class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-gray-700 cursor-pointer hover:bg-gray-50 font-table-primary text-table-primary select-none">
+<span class="material-symbols-outlined text-[16px] text-gray-500">table_view</span>
+<span>Exposure List</span>
+<span class="material-symbols-outlined text-[16px] text-gray-400">arrow_drop_down</span>
+</summary>
+<div class="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg overflow-hidden z-50 min-w-[210px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="index.html" class="flex items-center gap-2 px-4 py-2.5 bg-bg-highlight-blue text-orca-blue font-semibold font-table-primary text-table-primary">
+<span class="material-symbols-outlined text-[15px]">check</span>Exposure List
+</a>
+<a href="vulnerability-detail.html" class="flex items-center px-4 py-2.5 text-gray-700 hover:bg-gray-50 font-table-primary text-table-primary" style="padding-left:2.25rem;">Vulnerability Detail</a>
+<a href="exposure-summary.html" class="flex items-center px-4 py-2.5 text-gray-700 hover:bg-gray-50 font-table-primary text-table-primary" style="padding-left:2.25rem;">Exposure Summary</a>
+</div>
+</details>
+</div>
+<div class="flex items-center gap-4 flex-1 justify-end">
+<div class="relative w-96 mr-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">search</span>
+<input class="w-full pl-9 pr-10 py-1.5 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-orca-blue text-body-standard placeholder-gray-400" placeholder="Search Assets, Alerts, Vulnerabilities" type="text"/>
+<div class="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
+<span class="text-xs text-gray-400 border border-gray-200 rounded px-1 py-0.5 bg-gray-50">⌘</span>
+<span class="text-xs text-gray-400 border border-gray-200 rounded px-1 py-0.5 bg-gray-50">K</span>
+</div>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-orca-blue rounded-full hover:bg-blue-100 transition-colors border border-blue-100">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-table-primary text-table-primary">Ask Orca</span>
+</button>
+<div class="flex items-center gap-3 text-gray-600">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-gray-150 rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-severity-high rounded-full"></span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-gray-150 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<div class="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
+<div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-white font-table-primary text-table-primary">H</div>
+<div class="flex flex-col">
+<span class="font-table-primary text-table-primary text-orca-black text-[13px] leading-tight">Hello World</span>
+<span class="font-body-standard text-table-secondary text-gray-500 leading-tight">Orca Demo</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto">
+<div class="p-6 max-w-[1600px] mx-auto space-y-6">
+<!-- Page Title -->
+<div class="flex justify-between items-center">
+<h1 class="font-page-title text-page-title text-orca-black">ExposurePulse</h1>
+</div>
+<!-- KPI Funnel Tiles -->
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-bg-highlight-blue border-2 border-orca-blue rounded-lg p-5 shadow-sm flex flex-col relative overflow-hidden ring-4 ring-blue-50">
+<div class="text-orca-blue font-table-primary text-table-primary mb-2 font-bold">Externally Exploitable</div>
+<div class="font-kpi-metric text-kpi-metric text-orca-blue font-bold">37</div>
+<div class="absolute bottom-0 left-0 w-full h-1.5 bg-orca-blue"></div>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm flex flex-col relative overflow-hidden">
+<div class="text-gray-500 font-table-primary text-table-primary mb-2">App-Layer Exposed</div>
+<div class="font-kpi-metric text-kpi-metric text-orca-black">229</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-blue-300"></div>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm flex flex-col relative overflow-hidden">
+<div class="text-gray-500 font-table-primary text-table-primary mb-2">Network Reachable</div>
+<div class="font-kpi-metric text-kpi-metric text-orca-black">430</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-gray-300"></div>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm flex flex-col relative overflow-hidden">
+<div class="text-gray-500 font-table-primary text-table-primary mb-2">Raw CVEs</div>
+<div class="font-kpi-metric text-kpi-metric text-orca-black">850</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-gray-200"></div>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">Exposure State</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">Severity</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">Crown Jewel Adjacent</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">KEV</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">EPSS Threshold</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">Attack Surface</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="font-table-primary text-table-primary">Asset-Centric Risk Score</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-600 hover:bg-gray-50 cursor-pointer">
+<span class="material-symbols-outlined text-[15px] text-gray-400">swap_vert</span>
+<span class="font-table-primary text-table-primary">Sort by</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<button class="text-orca-blue font-table-primary text-table-primary hover:underline ml-2">Reset to Default</button>
+</div>
+<!-- Data Table Section -->
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm mt-6">
+<div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+<h2 class="font-section-header text-section-header text-orca-black">37 Exploitable Vulnerabilities</h2>
+<div class="flex gap-2">
+<button class="p-1.5 text-gray-500 hover:bg-gray-200 rounded border border-gray-300 bg-white">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="p-1.5 text-gray-500 hover:bg-gray-200 rounded border border-gray-300 bg-white">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+</div>
+<div style="overflow:visible;">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-gray-200 bg-white text-gray-500 font-label-caps text-label-caps uppercase">
+<th class="px-6 py-3 font-semibold">Severity</th>
+<th class="px-6 py-3 font-semibold">Vulnerability</th>
+<th class="px-6 py-3 font-semibold">CVSS Score</th>
+<th class="px-6 py-3 font-semibold">Affected Asset</th>
+<th class="px-6 py-3 font-semibold">Attack Surface</th>
+<th class="px-6 py-3 font-semibold text-center" id="ars-header">
+<div class="col-hdr-wrap" style="justify-content:center;">
+<span>Asset-Centric Correlation</span>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:13px;font-variation-settings:'FILL' 1;">info</span>
+<div class="col-hdr-tooltip">Asset-Centric Correlation reflects the total number of exploitable vulnerabilities found on this asset. Higher scores indicate assets that represent concentrated attack surfaces and should be prioritized for immediate remediation.</div>
+</div>
+</th>
+<th class="px-6 py-3 font-semibold">
+<div class="col-hdr-wrap">
+<span>Exposure Path</span>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:13px;font-variation-settings:'FILL' 1;">info</span>
+<div class="col-hdr-tooltip" style="left:auto;right:0;">The chain of network hops an attacker would traverse to reach this vulnerability from the internet. Click Visualize Path to see the full attack graph with node details.</div>
+</div>
+</th>
+<th class="px-6 py-3 font-semibold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-body-standard text-body-standard text-orca-black">
+<!-- Row 1: CVE-2024-3094 → links to vulnerability-detail.html -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors bg-white group">
+<td class="px-6 py-3 align-top">
+<div class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-severity-critical text-white font-label-caps text-[10px] uppercase font-bold">Critical</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="cve-info-wrap">
+<div class="flex items-center gap-1">
+<a href="vulnerability-detail.html" class="font-table-primary text-table-primary text-orca-blue hover:underline cursor-pointer">CVE-2024-3094</a>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+</div>
+<div class="text-gray-500 text-xs mt-1 font-body-standard">XZ Utils backdoor</div>
+<div class="cve-info-tooltip"><span style="font-weight:700;color:#FFFFFF;">XZ Utils Backdoor</span><br/>A malicious backdoor was covertly inserted into the XZ Utils compression library via a supply chain attack. It enables unauthenticated remote code execution through vulnerable SSH daemons on affected Linux systems.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div style="font-family:'Mulish',sans-serif;line-height:1.2;">
+<span style="font-size:18px;font-weight:800;color:#E2005E;">9.9</span>
+<span style="display:block;font-size:9px;color:#A9B2C7;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;">Critical</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-gray-500">dns</span>
+<span class="font-table-primary text-table-primary">prod-api-gateway-01</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="attack-signal-wrap">
+<div style="font-size:9px;color:#A9B2C7;font-family:'Mulish',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Application</div>
+<div style="background:#0073E5;color:#FFFFFF;border-radius:4px;padding:3px 8px;font-family:'Mulish',sans-serif;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap;">Public Endpoint</div>
+<div class="attack-signal-tooltip">
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0073E5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Public Endpoint</span><span style="color:#A9B2C7;"> — /v1/uploads accessible without auth</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0360C5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Public IP Exposure</span><span style="color:#A9B2C7;"> — 52.x.x.x directly reachable</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#5F6D8F;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">IAM Over-Permission</span><span style="color:#A9B2C7;"> — instance role has S3 full access</span></div></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top text-center" data-ars="9">
+<div class="score-pill-wrap">
+<div style="background:#E2005E;color:#FFFFFF;border-radius:6px;padding:3px 10px;font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;">
+<span style="font-size:15px;font-weight:800;">9</span><span style="font-size:10px;opacity:0.85;">CVEs</span>
+</div>
+<div class="score-pill-tooltip">This asset has <strong style="color:#fff;">9 exploitable vulnerabilities</strong>. An attacker who breaches this asset gains access to 9 exploitable attack paths simultaneously.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<button onclick="document.getElementById('attack-path-list-modal').showModal()" class="inline-flex items-center gap-1 px-2 py-1 rounded border border-orca-blue text-orca-blue hover:bg-blue-50 bg-white text-xs font-table-primary transition-colors cursor-pointer"><span class="material-symbols-outlined" style="font-size:14px;">account_tree</span>Visualize Path</button>
+</td>
+<td class="px-6 py-3 align-top text-right">
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="vulnerability-detail.html" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button onclick="showAssetRisk('prod-api-gateway-01',9,'r1')" id="r1-arc-btn" class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">hub</span>View Asset Risk Correlation</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="accept-risk-btn w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
+</td>
+</tr>
+<!-- Row 2: CVE-2024-6387 -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors bg-gray-50 group">
+<td class="px-6 py-3 align-top">
+<div class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-severity-critical text-white font-label-caps text-[10px] uppercase font-bold">Critical</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="cve-info-wrap">
+<div class="flex items-center gap-1">
+<div class="font-table-primary text-table-primary text-orca-blue hover:underline cursor-pointer">CVE-2024-6387</div>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+</div>
+<div class="text-gray-500 text-xs mt-1 font-body-standard">regreSSHion</div>
+<div class="cve-info-tooltip"><span style="font-weight:700;color:#FFFFFF;">regreSSHion — OpenSSH RCE</span><br/>A race condition in OpenSSH's signal handler allows unauthenticated remote code execution as root on glibc-based Linux systems. The flaw is a regression of a 2006 bug affecting millions of internet-exposed SSH servers.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div style="font-family:'Mulish',sans-serif;line-height:1.2;">
+<span style="font-size:18px;font-weight:800;color:#E2005E;">9.8</span>
+<span style="display:block;font-size:9px;color:#A9B2C7;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;">Critical</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-gray-500">dns</span>
+<span class="font-table-primary text-table-primary">bastion-host-eu</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="attack-signal-wrap">
+<div style="font-size:9px;color:#A9B2C7;font-family:'Mulish',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Network</div>
+<div style="background:#0360C5;color:#FFFFFF;border-radius:4px;padding:3px 8px;font-family:'Mulish',sans-serif;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap;">Public IP Exposure</div>
+<div class="attack-signal-tooltip">
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0360C5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Public IP Exposure</span><span style="color:#A9B2C7;"> — SSH port 22 open to 0.0.0.0/0</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0360C5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Security Group Misconfiguration</span><span style="color:#A9B2C7;"> — no IP restriction on SSH</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#5F6D8F;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">IAM Over-Permission</span><span style="color:#A9B2C7;"> — bastion role has admin permissions</span></div></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top text-center" data-ars="6">
+<div class="score-pill-wrap">
+<div style="background:#FE7B1F;color:#FFFFFF;border-radius:6px;padding:3px 10px;font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;">
+<span style="font-size:15px;font-weight:800;">6</span><span style="font-size:10px;opacity:0.85;">CVEs</span>
+</div>
+<div class="score-pill-tooltip">This asset has <strong style="color:#fff;">6 exploitable vulnerabilities</strong>. An attacker who breaches this asset gains access to 6 exploitable attack paths simultaneously.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<button class="inline-flex items-center gap-1 px-2 py-1 rounded border border-gray-300 text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white text-xs font-table-primary transition-colors cursor-pointer"><span class="material-symbols-outlined" style="font-size:14px;">account_tree</span>Visualize Path</button>
+</td>
+<td class="px-6 py-3 align-top text-right">
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button onclick="showAssetRisk('bastion-host-eu',6,'r2')" class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">hub</span>View Asset Risk Correlation</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="accept-risk-btn w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
+</td>
+</tr>
+<!-- Row 3: CVE-2023-44487 -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors bg-white group">
+<td class="px-6 py-3 align-top">
+<div class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-severity-high text-white font-label-caps text-[10px] uppercase font-bold">High</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="cve-info-wrap">
+<div class="flex items-center gap-1">
+<div class="font-table-primary text-table-primary text-orca-blue hover:underline cursor-pointer">CVE-2023-44487</div>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+</div>
+<div class="text-gray-500 text-xs mt-1 font-body-standard">HTTP/2 Rapid Reset</div>
+<div class="cve-info-tooltip"><span style="font-weight:700;color:#FFFFFF;">HTTP/2 Rapid Reset Attack</span><br/>Attackers exploit HTTP/2 stream cancellation to flood servers with requests, triggering denial of service at record-breaking scale. Actively weaponized in attacks reaching 398 million requests per second.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div style="font-family:'Mulish',sans-serif;line-height:1.2;">
+<span style="font-size:18px;font-weight:800;color:#E2005E;">9.5</span>
+<span style="display:block;font-size:9px;color:#A9B2C7;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;">Critical</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-gray-500">apps</span>
+<span class="font-table-primary text-table-primary">k8s-ingress-controller</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="attack-signal-wrap">
+<div style="font-size:9px;color:#A9B2C7;font-family:'Mulish',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Application</div>
+<div style="background:#0073E5;color:#FFFFFF;border-radius:4px;padding:3px 8px;font-family:'Mulish',sans-serif;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap;">Service Port Exposure</div>
+<div class="attack-signal-tooltip">
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0073E5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Service Port Exposure</span><span style="color:#A9B2C7;"> — :8080 externally reachable</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0073E5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Public Endpoint</span><span style="color:#A9B2C7;"> — HTTP/2 endpoint exposed</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#50C878;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">WAF Rule Active</span><span style="color:#A9B2C7;"> — mitigating, risk partially reduced</span></div></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top text-center" data-ars="3">
+<div class="score-pill-wrap">
+<div style="background:#F8CD39;color:#101921;border-radius:6px;padding:3px 10px;font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;">
+<span style="font-size:15px;font-weight:800;">3</span><span style="font-size:10px;opacity:0.75;">CVEs</span>
+</div>
+<div class="score-pill-tooltip">This asset has <strong style="color:#fff;">3 exploitable vulnerabilities</strong>. An attacker who breaches this asset gains access to 3 exploitable attack paths simultaneously.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<button class="inline-flex items-center gap-1 px-2 py-1 rounded border border-gray-300 text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white text-xs font-table-primary transition-colors cursor-pointer"><span class="material-symbols-outlined" style="font-size:14px;">account_tree</span>Visualize Path</button>
+</td>
+<td class="px-6 py-3 align-top text-right">
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button onclick="showAssetRisk('k8s-ingress-controller',3,'r3')" class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">hub</span>View Asset Risk Correlation</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="accept-risk-btn w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
+</td>
+</tr>
+<!-- Row 4: CVE-2024-21626 — Externally Exploitable (fixed) -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors bg-gray-50 group">
+<td class="px-6 py-3 align-top">
+<div class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-severity-high text-white font-label-caps text-[10px] uppercase font-bold">High</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="cve-info-wrap">
+<div class="flex items-center gap-1">
+<div class="font-table-primary text-table-primary text-orca-blue hover:underline cursor-pointer">CVE-2024-21626</div>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+</div>
+<div class="text-gray-500 text-xs mt-1 font-body-standard">runc container breakout</div>
+<div class="cve-info-tooltip-up"><span style="font-weight:700;color:#FFFFFF;">runc Container Escape</span><br/>A file descriptor leak in runc allows a malicious container to break out of isolation and access the host filesystem. An attacker with container execution rights can achieve full host compromise.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div style="font-family:'Mulish',sans-serif;line-height:1.2;">
+<span style="font-size:18px;font-weight:800;color:#E2005E;">9.3</span>
+<span style="display:block;font-size:9px;color:#A9B2C7;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;">Critical</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-gray-500">grid_view</span>
+<span class="font-table-primary text-table-primary">worker-node-group-1</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="attack-signal-wrap">
+<div style="font-size:9px;color:#A9B2C7;font-family:'Mulish',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Cloud Native</div>
+<div style="background:#5F6D8F;color:#FFFFFF;border-radius:4px;padding:3px 8px;font-family:'Mulish',sans-serif;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap;">IAM Over-Permission</div>
+<div class="attack-signal-tooltip">
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#5F6D8F;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">IAM Over-Permission</span><span style="color:#A9B2C7;"> — node pool role has cluster-admin</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#5F6D8F;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Instance Metadata Exposed</span><span style="color:#A9B2C7;"> — IMDSv1 enabled, no hop limit</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#5F6D8F;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Secrets in Environment</span><span style="color:#A9B2C7;"> — kubeconfig in env vars</span></div></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top text-center" data-ars="2">
+<div class="score-pill-wrap">
+<div style="background:#F8CD39;color:#101921;border-radius:6px;padding:3px 10px;font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;">
+<span style="font-size:15px;font-weight:800;">2</span><span style="font-size:10px;opacity:0.75;">CVEs</span>
+</div>
+<div class="score-pill-tooltip">This asset has <strong style="color:#fff;">2 exploitable vulnerabilities</strong>. An attacker who breaches this asset gains access to 2 exploitable attack paths simultaneously.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<button class="inline-flex items-center gap-1 px-2 py-1 rounded border border-gray-300 text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white text-xs font-table-primary transition-colors cursor-pointer"><span class="material-symbols-outlined" style="font-size:14px;">account_tree</span>Visualize Path</button>
+</td>
+<td class="px-6 py-3 align-top text-right">
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button onclick="showAssetRisk('worker-node-group-1',2,'r4')" class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">hub</span>View Asset Risk Correlation</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="accept-risk-btn w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
+</td>
+</tr>
+<!-- Row 5: CVE-2023-2868 -->
+<tr class="hover:bg-gray-150 transition-colors bg-white group">
+<td class="px-6 py-3 align-top">
+<div class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-severity-medium text-white font-label-caps text-[10px] uppercase font-bold">Medium</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="cve-info-wrap">
+<div class="flex items-center gap-1">
+<div class="font-table-primary text-table-primary text-orca-blue hover:underline cursor-pointer">CVE-2023-2868</div>
+<span class="material-symbols-outlined text-gray-400 cursor-default" style="font-size:14px;font-variation-settings:'FILL' 1;">info</span>
+</div>
+<div class="text-gray-500 text-xs mt-1 font-body-standard">Barracuda ESG RCE</div>
+<div class="cve-info-tooltip-up"><span style="font-weight:700;color:#FFFFFF;">Barracuda ESG Command Injection</span><br/>A command injection flaw in Barracuda Email Security Gateway lets unauthenticated attackers execute arbitrary code via crafted email attachments. Exploited in the wild by a China-nexus threat actor prior to patch availability.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div style="font-family:'Mulish',sans-serif;line-height:1.2;">
+<span style="font-size:18px;font-weight:800;color:#C95200;">8.4</span>
+<span style="display:block;font-size:9px;color:#A9B2C7;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px;">High</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-gray-500">router</span>
+<span class="font-table-primary text-table-primary">edge-gateway-appliance</span>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<div class="attack-signal-wrap">
+<div style="font-size:9px;color:#A9B2C7;font-family:'Mulish',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Application</div>
+<div style="background:#0073E5;color:#FFFFFF;border-radius:4px;padding:3px 8px;font-family:'Mulish',sans-serif;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap;">Accessible API</div>
+<div class="attack-signal-tooltip">
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0073E5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Accessible API</span><span style="color:#A9B2C7;"> — /admin endpoint with no auth</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#0360C5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Public IP Exposure</span><span style="color:#A9B2C7;"> — management port :8000 open</span></div></div>
+<div style="display:flex;align-items:flex-start;gap:8px;"><span style="width:7px;height:7px;border-radius:50%;background:#0360C5;flex-shrink:0;margin-top:3px;display:inline-block;"></span><div><span style="font-weight:600;color:#FFFFFF;">Security Group Misconfiguration</span><span style="color:#A9B2C7;"> — no egress restriction</span></div></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top text-center" data-ars="1">
+<div class="score-pill-wrap">
+<div style="background:#E0E2EC;color:#5F6D8F;border-radius:6px;padding:3px 10px;font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;">
+<span style="font-size:15px;font-weight:800;">1</span><span style="font-size:10px;opacity:0.75;">CVE</span>
+</div>
+<div class="score-pill-tooltip">This asset has <strong style="color:#fff;">1 exploitable vulnerability</strong>. An attacker who breaches this asset gains access to 1 exploitable attack path simultaneously.</div>
+</div>
+</td>
+<td class="px-6 py-3 align-top">
+<button class="inline-flex items-center gap-1 px-2 py-1 rounded border border-gray-300 text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white text-xs font-table-primary transition-colors cursor-pointer"><span class="material-symbols-outlined" style="font-size:14px;">account_tree</span>Visualize Path</button>
+</td>
+<td class="px-6 py-3 align-top text-right">
+<details class="relative inline-block text-left">
+<summary style="list-style:none;outline:none;" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded text-gray-600 hover:text-orca-blue hover:border-orca-blue bg-white cursor-pointer font-table-primary text-table-primary text-xs">Actions <span class="material-symbols-outlined text-[14px]">arrow_drop_down</span></summary>
+<div class="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg z-50 min-w-[220px]" style="box-shadow:0 6px 16px rgba(0,0,0,0.12);">
+<a href="#" class="flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary border-b border-gray-100"><span class="material-symbols-outlined text-[16px] text-orca-blue">open_in_new</span>View Details</a>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">refresh</span>Retest</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">not_interested</span>Report as Not Exploitable</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">task_alt</span>Acknowledge &amp; Mark for Review</button>
+<div class="border-t border-gray-100 my-1"></div>
+<button onclick="showAssetRisk('edge-gateway-appliance',1,'r5')" class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">hub</span>View Asset Risk Correlation</button>
+<button class="w-full flex items-center gap-2 px-4 py-2.5 text-orca-black hover:bg-gray-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px] text-gray-500">confirmation_number</span>Create Ticket</button>
+<button class="accept-risk-btn w-full flex items-center gap-2 px-4 py-2.5 text-severity-critical hover:bg-red-50 font-table-primary text-table-primary text-left"><span class="material-symbols-outlined text-[16px]">shield_with_heart</span>Accept Risk</button>
+</div>
+</details>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3 border-t border-gray-200 bg-white flex justify-between items-center text-sm text-gray-500 font-body-standard">
+<div>Showing 1 to 5 of 37 entries</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-gray-100 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-orca-blue text-white flex items-center justify-center font-table-primary">1</button>
+<button class="w-7 h-7 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center font-table-primary">2</button>
+<button class="w-7 h-7 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center font-table-primary">3</button>
+<span class="px-1">...</span>
+<button class="w-7 h-7 rounded hover:bg-gray-100 text-gray-600 flex items-center justify-center font-table-primary">8</button>
+<button class="p-1 rounded hover:bg-gray-100">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Asset Risk Correlation Modal -->
+<dialog id="asset-risk-modal" style="border:none;border-radius:12px;padding:0;max-width:600px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+<div>
+<div style="padding:20px 24px 16px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:flex-start;">
+<div>
+<div id="arm-title" style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#101921;display:flex;align-items:center;gap:8px;">
+<span class="material-symbols-outlined" style="color:#0080FF;font-size:20px;">hub</span>Asset Risk Correlation
+</div>
+<div id="arm-subtitle" style="font-family:'Mulish',sans-serif;font-size:12px;color:#5F6D8F;margin-top:3px;"></div>
+</div>
+<button onclick="document.getElementById('asset-risk-modal').close()" style="background:none;border:none;cursor:pointer;color:#A9B2C7;padding:4px;border-radius:4px;"><span class="material-symbols-outlined" style="font-size:20px;">close</span></button>
+</div>
+<div style="padding:16px 24px;max-height:380px;overflow-y:auto;">
+<table style="width:100%;border-collapse:collapse;">
+<thead>
+<tr style="border-bottom:1px solid #E5E7EB;">
+<th style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#A9B2C7;text-transform:uppercase;letter-spacing:0.05em;padding:8px 10px 8px 0;text-align:left;">CVE</th>
+<th style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#A9B2C7;text-transform:uppercase;letter-spacing:0.05em;padding:8px 10px;text-align:left;">Severity</th>
+<th style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#A9B2C7;text-transform:uppercase;letter-spacing:0.05em;padding:8px 0;text-align:left;">Exposure State</th>
+</tr>
+</thead>
+<tbody id="arm-body"></tbody>
+</table>
+</div>
+<div id="arm-footer" style="padding:14px 24px;background:#F3F4F9;border-top:1px solid #E5E7EB;border-radius:0 0 12px 12px;display:flex;justify-content:space-between;align-items:center;">
+<div id="arm-note" style="font-family:'Mulish',sans-serif;font-size:12px;color:#5F6D8F;"></div>
+<button onclick="document.getElementById('asset-risk-modal').close()" style="font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;color:#5F6D8F;background:white;border:1px solid #D1D5DB;border-radius:6px;padding:8px 20px;cursor:pointer;">Close</button>
+</div>
+</div>
+</dialog>
+
+<!-- Accept Risk Confirmation Modal -->
+<dialog id="accept-risk-modal" style="border:none;border-radius:12px;padding:0;max-width:460px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+<div style="padding:28px 28px 24px;">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+<div style="width:40px;height:40px;border-radius:50%;background:#FFF0F3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">shield_with_heart</span>
+</div>
+<div>
+<div style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#101921;">Accept Risk</div>
+<div style="font-family:'Mulish',sans-serif;font-size:12px;color:#5F6D8F;margin-top:2px;">This action is irreversible and will be logged</div>
+</div>
+</div>
+<p style="font-family:'Mulish',sans-serif;font-size:13px;color:#101921;line-height:1.6;margin-bottom:14px;">You are choosing to <strong>accept the risk</strong> of this vulnerability without remediation. By confirming, you acknowledge that:</p>
+<ul style="font-family:'Mulish',sans-serif;font-size:13px;color:#5F6D8F;line-height:1.8;margin-bottom:20px;padding-left:18px;">
+<li>This vulnerability will remain <strong style="color:#101921;">unmitigated</strong> in your environment</li>
+<li>You are <strong style="color:#101921;">solely responsible</strong> for any resulting exposure or breach</li>
+<li>This decision will be <strong style="color:#101921;">audited and timestamped</strong> under your account</li>
+</ul>
+<div style="background:#FFF0F3;border:1px solid #FFCCD9;border-radius:8px;padding:10px 14px;margin-bottom:22px;display:flex;align-items:flex-start;gap:8px;">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:16px;flex-shrink:0;margin-top:1px;font-variation-settings:'FILL' 1;">warning</span>
+<span style="font-family:'Mulish',sans-serif;font-size:12px;color:#E2005E;font-weight:600;">Proceeding confirms you accept full responsibility for this risk on your own accord.</span>
+</div>
+<div style="display:flex;justify-content:flex-end;gap:10px;">
+<button onclick="document.getElementById('accept-risk-modal').close()" style="font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;color:#5F6D8F;background:white;border:1px solid #D1D5DB;border-radius:6px;padding:9px 20px;cursor:pointer;">Cancel</button>
+<button onclick="document.getElementById('accept-risk-modal').close()" style="font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;color:white;background:#E2005E;border:none;border-radius:6px;padding:9px 20px;cursor:pointer;">Accept Risk</button>
+</div>
+</div>
+</dialog>
+
+<script>
+// Accept Risk modal
+document.querySelectorAll('.accept-risk-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('accept-risk-modal').showModal();
+    });
+});
+
+// Severity badge helper
+function sevBadge(s) {
+    var colors = { CRITICAL:'#E2005E', HIGH:'#FF3342', MEDIUM:'#FE7B1F', LOW:'#F8CD39' };
+    var tc = s === 'LOW' ? '#101921' : '#FFFFFF';
+    return '<span style="background:'+colors[s]+';color:'+tc+';border-radius:4px;padding:2px 7px;font-family:Mulish,sans-serif;font-size:10px;font-weight:700;display:inline-block;">'+s+'</span>';
+}
+// Exposure state badge
+function expBadge(e) {
+    if(e==='Externally Exploitable') return '<span style="color:#E2005E;font-family:Mulish,sans-serif;font-size:12px;font-weight:600;">'+e+'</span>';
+    if(e==='Reachable but Mitigated') return '<span style="color:#FE7B1F;font-family:Mulish,sans-serif;font-size:12px;">'+e+'</span>';
+    return '<span style="color:#8693B2;font-family:Mulish,sans-serif;font-size:12px;">'+e+'</span>';
+}
+
+var assetData = {
+    r1: { name:'prod-api-gateway-01', count:9, cves:[
+        ['CVE-2024-3094','CRITICAL','Externally Exploitable'],
+        ['CVE-2024-6387','CRITICAL','Externally Exploitable'],
+        ['CVE-2023-44487','HIGH','Externally Exploitable'],
+        ['CVE-2024-21626','HIGH','Reachable but Mitigated'],
+        ['CVE-2023-2868','HIGH','Externally Exploitable'],
+        ['CVE-2024-1234','HIGH','Externally Exploitable'],
+        ['CVE-2023-5678','MEDIUM','Reachable but Mitigated'],
+        ['CVE-2023-9101','MEDIUM','Not Externally Reachable'],
+        ['CVE-2022-4567','LOW','Not Externally Reachable']
+    ]},
+    r2: { name:'bastion-host-eu', count:6, cves:[
+        ['CVE-2024-6387','CRITICAL','Externally Exploitable'],
+        ['CVE-2024-3094','CRITICAL','Externally Exploitable'],
+        ['CVE-2023-38408','HIGH','Externally Exploitable'],
+        ['CVE-2023-51385','HIGH','Reachable but Mitigated'],
+        ['CVE-2023-28531','MEDIUM','Reachable but Mitigated'],
+        ['CVE-2022-29154','LOW','Not Externally Reachable']
+    ]},
+    r3: { name:'k8s-ingress-controller', count:3, cves:[
+        ['CVE-2023-44487','HIGH','Externally Exploitable'],
+        ['CVE-2024-0553','HIGH','Reachable but Mitigated'],
+        ['CVE-2023-6129','MEDIUM','Not Externally Reachable']
+    ]},
+    r4: { name:'worker-node-group-1', count:2, cves:[
+        ['CVE-2024-21626','HIGH','Externally Exploitable'],
+        ['CVE-2023-2253','MEDIUM','Reachable but Mitigated']
+    ]},
+    r5: { name:'edge-gateway-appliance', count:1, cves:[
+        ['CVE-2023-2868','MEDIUM','Externally Exploitable']
+    ]}
+};
+
+function showAssetRisk(asset, count, key) {
+    var d = assetData[key];
+    document.getElementById('arm-title').innerHTML = '<span class="material-symbols-outlined" style="color:#0080FF;font-size:20px;vertical-align:middle;margin-right:8px;">hub</span>Asset Risk Correlation — ' + d.name;
+    document.getElementById('arm-subtitle').textContent = d.count + ' exploitable vulnerabilities found on this asset';
+    var rows = d.cves.map(function(c) {
+        return '<tr style="border-bottom:1px solid #F3F4F9;">'
+            +'<td style="padding:10px 10px 10px 0;font-family:Mulish,sans-serif;font-size:12px;font-weight:600;color:#0080FF;">'+c[0]+'</td>'
+            +'<td style="padding:10px;">'+sevBadge(c[1])+'</td>'
+            +'<td style="padding:10px 0;">'+expBadge(c[2])+'</td>'
+            +'</tr>';
+    }).join('');
+    document.getElementById('arm-body').innerHTML = rows;
+    document.getElementById('arm-note').textContent = 'Prioritizing this asset addresses ' + d.count + ' exploitable vulnerabilities simultaneously.';
+    document.getElementById('asset-risk-modal').showModal();
+}
+
+// ARS column sort
+var arsAsc = false;
+function sortByARS() {
+    var tbody = document.querySelector('table tbody');
+    var rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort(function(a, b) {
+        var va = parseInt(a.querySelector('[data-ars]').getAttribute('data-ars'));
+        var vb = parseInt(b.querySelector('[data-ars]').getAttribute('data-ars'));
+        return arsAsc ? va - vb : vb - va;
+    });
+    arsAsc = !arsAsc;
+    rows.forEach(function(r) { tbody.appendChild(r); });
+}
+
+document.querySelectorAll('.accept-risk-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('accept-risk-modal').showModal();
+    });
+});
+</script>
+
+<!-- Attack Path Modal (list page) -->
+<dialog id="attack-path-list-modal" style="border:none;border-radius:12px;padding:0;max-width:680px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+<div style="background:#FFFFFF;border-radius:12px;overflow:hidden;">
+<div style="padding:20px 24px 16px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:flex-start;">
+<div>
+<div style="font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#101921;display:flex;align-items:center;gap:8px;">
+<span class="material-symbols-outlined" style="color:#0080FF;font-size:20px;">account_tree</span>Attack Path — CVE-2024-3094
+</div>
+<div style="font-family:'Mulish',sans-serif;font-size:12px;color:#5F6D8F;margin-top:3px;">XZ Utils Backdoor · prod-api-gateway-01</div>
+</div>
+<button onclick="document.getElementById('attack-path-list-modal').close()" style="background:none;border:none;cursor:pointer;color:#A9B2C7;padding:4px;border-radius:4px;"><span class="material-symbols-outlined" style="font-size:20px;">close</span></button>
+</div>
+<div style="padding:28px 24px;background:#F8F9FC;">
+<!-- Attack Path Nodes -->
+<div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;overflow-x:auto;">
+<!-- Internet -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#EBF4FF;border:2px solid #0073E5;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,115,229,0.15);">
+<span class="material-symbols-outlined" style="color:#0073E5;font-size:22px;font-variation-settings:'FILL' 1;">public</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">Internet</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Origin</span>
+</div>
+<!-- Arrow -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
+<div style="width:36px;height:2px;background:linear-gradient(90deg,#0073E5,#0360C5);border-radius:1px;"></div>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">TCP/443</span>
+</div>
+<!-- ALB:443 -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#EBF4FF;border:2px solid #0073E5;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,115,229,0.15);">
+<span class="material-symbols-outlined" style="color:#0073E5;font-size:22px;font-variation-settings:'FILL' 1;">balance</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">ALB:443</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Load Balancer</span>
+</div>
+<!-- Arrow -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
+<div style="width:36px;height:2px;background:linear-gradient(90deg,#0360C5,#E2005E);border-radius:1px;"></div>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Forward</span>
+</div>
+<!-- prod-api-gw-01 -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(226,0,94,0.15);">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">dns</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">prod-api-gw-01</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">API Gateway</span>
+</div>
+<!-- Arrow -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
+<div style="width:36px;height:2px;background:#E2005E;border-radius:1px;"></div>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Route</span>
+</div>
+<!-- /v1/uploads -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(226,0,94,0.15);">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">upload</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">/v1/uploads</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Public Endpoint</span>
+</div>
+<!-- Arrow -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
+<div style="width:36px;height:2px;background:#E2005E;border-radius:1px;"></div>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Exploit</span>
+</div>
+<!-- liblzma 5.6.1 -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2.5px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(226,0,94,0.1),0 2px 8px rgba(226,0,94,0.2);">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">bug_report</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#E2005E;text-align:center;">liblzma 5.6.1</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#E2005E;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;opacity:0.85;">CVE-2024-3094</span>
+</div>
+</div>
+<!-- Legend -->
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #E5E7EB;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+<div style="display:flex;align-items:center;gap:6px;font-family:'Mulish',sans-serif;font-size:11px;color:#5F6D8F;">
+<span style="width:10px;height:10px;border-radius:50%;background:#0073E5;display:inline-block;"></span>Network hop
+</div>
+<div style="display:flex;align-items:center;gap:6px;font-family:'Mulish',sans-serif;font-size:11px;color:#5F6D8F;">
+<span style="width:10px;height:10px;border-radius:50%;background:#E2005E;display:inline-block;"></span>Vulnerable / exploitable
+</div>
+<div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:'Mulish',sans-serif;font-size:11px;">
+<span style="background:#E2005E;color:#fff;border-radius:4px;padding:1px 7px;font-weight:700;font-size:10px;">CVSS 9.9</span>
+<span style="color:#5F6D8F;">Critical · Externally Reachable</span>
+</div>
+</div>
+</div>
+</div>
+</dialog>
+</body></html>
