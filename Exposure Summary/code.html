@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ExposurePulse - Exposure Summary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&amp;family=Mulish:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#dae3ef",
+                    "gray-500": "#8693B2",
+                    "on-error-container": "#93000a",
+                    "orca-black": "#101921",
+                    "severity-low": "#F8CD39",
+                    "surface-bright": "#f9f9ff",
+                    "tertiary-container": "#c25200",
+                    "gray-50": "#FDFDFF",
+                    "bg-highlight-blue": "#E6F1FB",
+                    "surface-variant": "#e0e2ed",
+                    "blue-5": "#0360C5",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#abc7ff",
+                    "surface-container-highest": "#e0e2ed",
+                    "on-secondary-fixed": "#141c25",
+                    "severity-medium": "#FE7B1F",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c1c6d7",
+                    "on-primary-container": "#fefcff",
+                    "gray-600": "#5F6D8F",
+                    "on-tertiary-fixed-variant": "#793100",
+                    "inverse-on-surface": "#eef0fb",
+                    "bg-highlight-red": "#FFF0F0",
+                    "surface-container-low": "#f1f3fe",
+                    "surface-container-high": "#e6e8f3",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#005cbb",
+                    "success-green": "#50C878",
+                    "severity-critical": "#E2005E",
+                    "on-secondary-container": "#5c656f",
+                    "on-background": "#181c23",
+                    "surface-container": "#ebedf8",
+                    "primary-fixed": "#d7e3ff",
+                    "on-tertiary-fixed": "#341100",
+                    "tertiary-fixed": "#ffdbcb",
+                    "cyan-accent": "#02D6FF",
+                    "on-primary-fixed-variant": "#00458f",
+                    "blue-ada-dark": "#AFCFEE",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "secondary-container": "#dae3ef",
+                    "on-tertiary-container": "#fffbff",
+                    "severity-high": "#FF3342",
+                    "gray-175": "#E8E9F1",
+                    "on-secondary-fixed-variant": "#3f4851",
+                    "primary-container": "#0072e4",
+                    "on-surface-variant": "#414754",
+                    "tertiary": "#9b4000",
+                    "error-container": "#ffdad6",
+                    "gray-150": "#F3F4F9",
+                    "surface": "#f9f9ff",
+                    "on-surface": "#181c23",
+                    "gray-400": "#A9B2C7",
+                    "blue-ada-light": "#0073E5",
+                    "orca-blue": "#0080FF",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#bec7d3",
+                    "on-primary-fixed": "#001b3f",
+                    "primary": "#005ab6",
+                    "gray-100": "#F9F9FC",
+                    "surface-dim": "#d7dae4",
+                    "primary-fixed-dim": "#abc7ff",
+                    "gray-200": "#E0E2EC",
+                    "on-error": "#ffffff",
+                    "secondary": "#565f69",
+                    "inverse-surface": "#2d3038",
+                    "background": "#f9f9ff",
+                    "outline": "#717786"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section": "32px",
+                    "small": "8px",
+                    "micro": "4px",
+                    "compact": "12px",
+                    "standard": "16px",
+                    "large": "24px",
+                    "page": "48px"
+            },
+            "fontFamily": {
+                    "kpi-metric": [
+                            "Montserrat"
+                    ],
+                    "section-header": [
+                            "Mulish"
+                    ],
+                    "page-title": [
+                            "Montserrat"
+                    ],
+                    "table-primary": [
+                            "Mulish"
+                    ],
+                    "monospace-data": [
+                            "Courier New"
+                    ],
+                    "table-secondary": [
+                            "Mulish"
+                    ],
+                    "label-caps": [
+                            "Mulish"
+                    ],
+                    "body-standard": [
+                            "Mulish"
+                    ]
+            },
+            "fontSize": {
+                    "kpi-metric": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "section-header": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "page-title": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "table-primary": [
+                            "13px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "monospace-data": [
+                            "11px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "table-secondary": [
+                            "11px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-standard": [
+                            "13px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-standard flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="docked h-full w-[56px] left-0 top-0 fixed bg-surface dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col items-center py-4 space-y-6 z-50">
+<div class="mb-4">
+<span class="font-page-title text-page-title font-bold text-orca-black dark:text-white">EP</span>
+</div>
+<div class="flex flex-col items-center space-y-4 w-full px-2">
+<!-- Dashboard -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Dashboard">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<!-- Missions -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Missions">
+<span class="material-symbols-outlined">target</span>
+</button>
+<!-- Inventory -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Inventory">
+<span class="material-symbols-outlined">inventory</span>
+</button>
+<!-- Risks (Active) -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-orca-blue dark:text-cyan-accent bg-bg-highlight-blue dark:bg-secondary-container scale-95 active:scale-90 duration-200" title="Risks">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+</button>
+<!-- Compliance -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Compliance">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+</button>
+<!-- Alerts -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Alerts">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<!-- Settings -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<!-- Help -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Help">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="mt-auto mb-4 w-full px-2 flex flex-col items-center">
+<!-- Support -->
+<button class="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-400 hover:text-orca-blue dark:hover:text-cyan-accent hover:bg-gray-150 dark:hover:bg-surface-container-highest transition-colors scale-95 active:scale-90 duration-200" title="Support">
+<span class="material-symbols-outlined">support_agent</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-[56px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 h-[56px] bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline flex justify-between items-center px-6 sticky z-40">
+<div class="flex items-center space-x-8 h-full">
+<span class="font-page-title text-page-title font-bold text-orca-blue dark:text-cyan-accent">ExposurePulse</span>
+<nav class="hidden md:flex h-full space-x-6">
+<a class="h-full flex items-center text-gray-600 dark:text-gray-400 font-medium hover:text-orca-blue dark:hover:text-cyan-accent transition-all duration-200 ease-in-out" href="#">Exposure List</a>
+<a class="h-full flex items-center text-gray-600 dark:text-gray-400 font-medium hover:text-orca-blue dark:hover:text-cyan-accent transition-all duration-200 ease-in-out" href="#">Vulnerability Detail</a>
+<a class="h-full flex items-center text-orca-blue dark:text-cyan-accent border-b-2 border-orca-blue dark:border-cyan-accent font-semibold transition-all duration-200 ease-in-out" href="#">Exposure Summary</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-gray-100 border border-gray-200 rounded-DEFAULT text-body-standard focus:outline-none focus:border-orca-blue focus:ring-1 focus:ring-orca-blue w-64" placeholder="Search..." type="text"/>
+</div>
+<button class="px-4 py-1.5 text-body-standard font-semibold text-orca-blue border border-orca-blue rounded-DEFAULT hover:bg-gray-50 transition-colors">Select Unit</button>
+<button class="px-4 py-1.5 text-body-standard font-semibold bg-orca-blue text-white rounded-DEFAULT hover:bg-primary transition-colors">Ask Orca</button>
+<div class="flex items-center space-x-2 pl-2 border-l border-gray-200">
+<button class="text-gray-500 hover:text-orca-blue transition-colors p-1"><span class="material-symbols-outlined">notifications</span></button>
+<button class="text-gray-500 hover:text-orca-blue transition-colors p-1"><span class="material-symbols-outlined">help</span></button>
+<button class="text-gray-500 hover:text-orca-blue transition-colors p-1"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-large bg-background overflow-y-auto">
+<!-- Header Section -->
+<div class="mb-section flex justify-between items-end">
+<div>
+<h1 class="font-page-title text-page-title text-orca-black mb-micro">Executive Summary</h1>
+<p class="font-body-standard text-body-standard text-gray-600">Enterprise risk reduction over the last 30 days.</p>
+</div>
+<div class="flex space-x-compact">
+<button class="px-4 py-2 bg-white border border-gray-200 rounded-DEFAULT text-body-standard font-table-primary text-gray-600 hover:bg-gray-50 transition-colors flex items-center">
+<span class="material-symbols-outlined mr-2 text-[18px]">calendar_today</span>
+                        Last 30 Days
+                    </button>
+<button class="px-4 py-2 bg-white border border-gray-200 rounded-DEFAULT text-body-standard font-table-primary text-gray-600 hover:bg-gray-50 transition-colors flex items-center">
+<span class="material-symbols-outlined mr-2 text-[18px]">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-large">
+<!-- Hero Metric (Full Width on mobile, 1 col on LG) -->
+<div class="bg-white rounded-lg border border-gray-200 p-large flex flex-col justify-center items-start shadow-sm">
+<h2 class="font-section-header text-section-header text-gray-600 mb-compact uppercase tracking-wider">Critical Risk Reduction</h2>
+<div class="font-kpi-metric text-[64px] font-medium text-orca-blue leading-none mb-small">99.6%</div>
+<p class="font-body-standard text-body-standard text-gray-500 mb-standard">Significant reduction in critical exposure paths since baseline implementation.</p>
+<div class="w-full bg-gray-100 rounded-full h-2 mb-2">
+<div class="bg-success-green h-2 rounded-full" style="width: 99.6%"></div>
+</div>
+<div class="flex justify-between w-full font-monospace-data text-monospace-data text-gray-500">
+<span>Baseline (842)</span>
+<span>Current (3)</span>
+</div>
+</div>
+<!-- Exposure Funnel (2 cols on LG) -->
+<div class="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-large shadow-sm flex flex-col">
+<h2 class="font-section-header text-section-header text-orca-black mb-standard">Exposure Path Funnel</h2>
+<div class="flex-1 flex flex-col items-center justify-center py-small">
+<!-- Funnel Container -->
+<div class="w-full max-w-md flex flex-col items-center space-y-2">
+<!-- Level 1 -->
+<div class="w-full h-12 bg-gray-200 rounded-sm flex items-center justify-between px-4 relative">
+<span class="font-table-primary text-table-primary text-gray-600">Total Vulnerabilities</span>
+<span class="font-table-primary text-table-primary text-orca-black">100% (12,400)</span>
+</div>
+<!-- Level 2 -->
+<div class="w-[80%] h-12 bg-bg-highlight-blue rounded-sm flex items-center justify-between px-4 relative border border-blue-ada-dark/30">
+<span class="font-table-primary text-table-primary text-blue-ada-dark">Exploitable</span>
+<span class="font-table-primary text-table-primary text-blue-5">80% (9,920)</span>
+</div>
+<!-- Level 3 -->
+<div class="w-[58%] h-12 bg-blue-ada-light text-white rounded-sm flex items-center justify-between px-4 relative">
+<span class="font-table-primary text-table-primary">Active Path</span>
+<span class="font-table-primary text-table-primary">58% (7,192)</span>
+</div>
+<!-- Level 4 -->
+<div class="w-[38%] h-12 bg-orca-blue text-white rounded-sm flex items-center justify-between px-4 relative shadow-md">
+<span class="font-table-primary text-table-primary font-bold">Critical Exposure</span>
+<span class="font-table-primary text-table-primary font-bold">38% (4,712)</span>
+</div>
+</div>
+</div>
+<div class="mt-standard bg-gray-50 border border-gray-200 rounded-DEFAULT p-compact flex items-start space-x-3">
+<span class="material-symbols-outlined text-orca-blue">info</span>
+<p class="font-body-standard text-body-standard text-gray-600">Only 38% of total vulnerabilities represent a complete, exploitable attack path to critical assets. Prioritize these items.</p>
+</div>
+</div>
+<!-- Trend Chart (Full Width) -->
+<div class="lg:col-span-3 bg-white rounded-lg border border-gray-200 p-large shadow-sm">
+<div class="flex justify-between items-center mb-standard">
+<h2 class="font-section-header text-section-header text-orca-black">Risk Exposure Trend</h2>
+<div class="font-table-secondary text-table-secondary text-gray-500 flex items-center">
+<span class="w-3 h-3 rounded-full bg-orca-blue mr-2"></span> Critical Path Count
+                        </div>
+</div>
+<!-- Simulated Chart Area -->
+<div class="relative h-[250px] w-full border-b border-l border-gray-200 flex items-end pt-8 pb-2 pl-2">
+<!-- Y Axis Labels -->
+<div class="absolute left-[-30px] top-0 h-full flex flex-col justify-between font-monospace-data text-monospace-data text-gray-400 py-2">
+<span>1000</span>
+<span>750</span>
+<span>500</span>
+<span>250</span>
+<span>0</span>
+</div>
+<!-- X Axis Labels -->
+<div class="absolute bottom-[-25px] w-full flex justify-between font-monospace-data text-monospace-data text-gray-400 px-4">
+<span>Jan 1</span>
+<span>Jan 15</span>
+<span>Feb 1</span>
+<span>Feb 15</span>
+<span>Mar 1</span>
+</div>
+<!-- Chart Content -->
+<div class="w-full h-full relative overflow-hidden">
+<!-- Area Fill -->
+<div class="absolute bottom-0 w-full h-[80%] bg-gradient-to-t from-orca-blue/20 to-transparent" style="clip-path: polygon(0 100%, 0 20%, 25% 15%, 50% 40%, 75% 75%, 100% 95%, 100% 100%);"></div>
+<!-- Line -->
+<svg class="absolute top-0 left-0 w-full h-full" preserveaspectratio="none">
+<path d="M0,50 Q125,40 250,100 T500,180 T1000,230" fill="none" stroke="#0080FF" stroke-width="3"></path>
+</svg>
+<!-- Annotations -->
+<div class="absolute top-[20%] left-[10%] flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-gray-500 mb-1 z-10"></div>
+<div class="h-[150px] w-px bg-gray-300 border-dashed border-l border-gray-400"></div>
+<span class="absolute top-[-25px] whitespace-nowrap font-label-caps text-label-caps text-gray-600 bg-white px-2 border border-gray-200 rounded-sm">BETA BASELINE</span>
+</div>
+<div class="absolute top-[80%] left-[80%] flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-orca-blue mb-1 z-10"></div>
+<div class="h-[40px] w-px bg-blue-200 border-dashed border-l border-orca-blue"></div>
+<span class="absolute top-[-25px] whitespace-nowrap font-label-caps text-label-caps text-orca-blue bg-white px-2 border border-blue-200 rounded-sm">GA ANNOTATION</span>
+</div>
+</div>
+</div>
+<div class="mt-8 text-right">
+<span class="font-table-secondary text-table-secondary text-gray-400 italic">Design partner beta begins Mar 2026 (confidential)</span>
+</div>
+</div>
+<!-- Bottom Table: Top Risky Assets -->
+<div class="lg:col-span-3 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+<div class="p-standard border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+<h2 class="font-section-header text-section-header text-orca-black">Top Critical Assets by Risk</h2>
+<button class="text-orca-blue font-table-primary text-table-primary hover:underline">View All Assets</button>
+</div>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-white border-b border-gray-200 font-label-caps text-label-caps text-gray-500">
+<th class="p-standard font-semibold">Asset Name</th>
+<th class="p-standard font-semibold w-[40%]">Risk Score</th>
+<th class="p-standard font-semibold text-center">Trend</th>
+<th class="p-standard font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-standard text-body-standard text-orca-black">
+<!-- Row 1 -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors">
+<td class="p-standard font-monospace-data text-monospace-data font-semibold">prd-db-cluster-01</td>
+<td class="p-standard">
+<div class="flex items-center space-x-3">
+<span class="font-table-primary font-bold w-8 text-right">98</span>
+<div class="flex-1 bg-gray-100 rounded-full h-1.5">
+<div class="bg-severity-critical h-1.5 rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="p-standard text-center">
+<span class="material-symbols-outlined text-severity-critical text-[20px]" title="Worsening">trending_up</span>
+</td>
+<td class="p-standard text-right">
+<button class="px-3 py-1 text-xs border border-gray-200 rounded hover:bg-white transition-colors">Investigate</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-gray-50 border-b border-gray-100 hover:bg-gray-150 transition-colors">
+<td class="p-standard font-monospace-data text-monospace-data font-semibold">k8s-master-node-eu</td>
+<td class="p-standard">
+<div class="flex items-center space-x-3">
+<span class="font-table-primary font-bold w-8 text-right">85</span>
+<div class="flex-1 bg-gray-100 rounded-full h-1.5">
+<div class="bg-severity-high h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+</td>
+<td class="p-standard text-center">
+<span class="material-symbols-outlined text-gray-400 text-[20px]" title="Stable">trending_flat</span>
+</td>
+<td class="p-standard text-right">
+<button class="px-3 py-1 text-xs border border-gray-200 rounded hover:bg-white transition-colors">Investigate</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-gray-100 hover:bg-gray-150 transition-colors">
+<td class="p-standard font-monospace-data text-monospace-data font-semibold">auth-gateway-svc</td>
+<td class="p-standard">
+<div class="flex items-center space-x-3">
+<span class="font-table-primary font-bold w-8 text-right">62</span>
+<div class="flex-1 bg-gray-100 rounded-full h-1.5">
+<div class="bg-severity-medium h-1.5 rounded-full" style="width: 62%"></div>
+</div>
+</div>
+</td>
+<td class="p-standard text-center">
+<span class="material-symbols-outlined text-success-green text-[20px]" title="Improving">trending_down</span>
+</td>
+<td class="p-standard text-right">
+<button class="px-3 py-1 text-xs border border-gray-200 rounded hover:bg-white transition-colors">Investigate</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
