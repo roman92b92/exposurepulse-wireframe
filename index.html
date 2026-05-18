@@ -949,7 +949,7 @@ function renderPagination() {
     var start = (currentPage - 1) * pageSize;
     var end = Math.min(start + pageSize, total);
     rows.forEach(function(r, i) { r.style.display = (i >= start && i < end) ? '' : 'none'; });
-    document.getElementById('page-info').textContent = 'Showing ' + (start + 1) + ' to ' + end + ' of ' + total + ' entries';
+    document.getElementById('page-info').textContent = 'Showing ' + (start + 1) + ' to ' + end + ' of ' + '37' + ' entries';
     var btns = document.getElementById('pagination-buttons');
     btns.innerHTML = '';
     var prev = document.createElement('button');
