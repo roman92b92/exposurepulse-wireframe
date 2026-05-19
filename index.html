@@ -1006,7 +1006,7 @@ document.querySelectorAll('.accept-risk-btn').forEach(function(btn) {
 </script>
 
 <!-- Attack Path Modal (list page) -->
-<dialog id="attack-path-list-modal" style="border:none;border-radius:12px;padding:0;max-width:780px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+<dialog id="attack-path-list-modal" style="border:none;border-radius:12px;padding:0;max-width:900px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
 <div style="background:#FFFFFF;border-radius:12px;overflow:hidden;">
 <div style="padding:20px 24px 16px;border-bottom:1px solid #E5E7EB;display:flex;justify-content:space-between;align-items:flex-start;">
 <div>
@@ -1059,25 +1059,38 @@ document.querySelectorAll('.accept-risk-btn').forEach(function(btn) {
 <div style="width:36px;height:2px;background:#E2005E;border-radius:1px;"></div>
 <span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Route</span>
 </div>
-<!-- /v1/uploads -->
+<!-- Web Terminal App -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
 <div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(226,0,94,0.15);">
-<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">upload</span>
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">terminal</span>
 </div>
-<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">/v1/uploads</span>
-<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Public Endpoint</span>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">Web Terminal</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">No Auth Gate</span>
+</div>
+<!-- Arrow -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
+<div style="width:36px;height:2px;background:#E2005E;border-radius:1px;"></div>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Spawns</span>
+</div>
+<!-- sshd (liblzma.so.5) -->
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
+<div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(226,0,94,0.15);">
+<span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">dns</span>
+</div>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#101921;text-align:center;">sshd</span>
+<span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">liblzma.so.5</span>
 </div>
 <!-- Arrow -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 6px;padding-bottom:22px;">
 <div style="width:36px;height:2px;background:#E2005E;border-radius:1px;"></div>
 <span style="font-family:'Mulish',sans-serif;font-size:9px;color:#A9B2C7;font-weight:600;">Exploit</span>
 </div>
-<!-- liblzma 5.6.1 -->
+<!-- RCE as Root -->
 <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:90px;">
 <div style="width:48px;height:48px;border-radius:50%;background:#FFEEF5;border:2.5px solid #E2005E;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(226,0,94,0.1),0 2px 8px rgba(226,0,94,0.2);">
 <span class="material-symbols-outlined" style="color:#E2005E;font-size:22px;font-variation-settings:'FILL' 1;">bug_report</span>
 </div>
-<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#E2005E;text-align:center;">liblzma 5.6.1</span>
+<span style="font-family:'Mulish',sans-serif;font-size:11px;font-weight:700;color:#E2005E;text-align:center;">RCE as Root</span>
 <span style="font-family:'Mulish',sans-serif;font-size:9px;color:#E2005E;text-align:center;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;opacity:0.85;">CVE-2024-3094</span>
 </div>
 </div>
